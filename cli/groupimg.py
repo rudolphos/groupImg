@@ -13,8 +13,20 @@ from multiprocessing import cpu_count
 Image.MAX_IMAGE_PIXELS = None
 warnings.simplefilter('ignore')
 
-class K_means:
+def preserve_file_time(source, destination):
+    """
+    Preserves the access time, modified time, and creation time (on Windows) for the copied/moved file.
+    """
+    stat = os.stat(source)
+    
+    # Preserve access and modified times
+    os.utime(destination, (stat.st_atime, stat.st_mtime))
+    
+    # On Windows also preserve creation time if available
+    if os.name == 'nt' and hasattr(stat, 'st_birthtime'):
+        os.utime(destination, (stat.st_atime, stat.st_mtime, stat.st_birthtime))
 
+class K_means:
   def __init__(self, k=3, size=False, resample=32):
     self.k = k
     self.cluster = []
@@ -103,32 +115,41 @@ ap.add_argument("-r", "--resample", type=int, default=128, help="size to resampl
 ap.add_argument("-s", "--size", default=False, action="store_true", help="use size to compare images")
 ap.add_argument("-m", "--move", default=False, action="store_true", help="move instead of copy")
 args = vars(ap.parse_args())
+
 types = ('*.jpg', '*.JPG', '*.png', '*.jpeg')
 imagePaths = []
 folder = args["folder"]
 if not folder.endswith("/") :
-	folder+="/"
-for files in types :
-	imagePaths.extend(sorted(glob.glob(folder+files)))
+    folder += "/"
+for files in types:
+    imagePaths.extend(sorted(glob.glob(folder+files)))
 nimages = len(imagePaths)
-nfolders = int(math.log(args["kmeans"], 10))+1
-if nimages <= 0 :
-	print("No images found!")
-	exit()
-if args["resample"] < 16 or args["resample"] > 256 :
-	print("-r should be a value between 16 and 256")
-	exit()
+nfolders = int(math.log(args["kmeans"], 10)) + 1
+
+if nimages <= 0:
+    print("No images found!")
+    exit()
+
+if args["resample"] < 16 or args["resample"] > 256:
+    print("-r should be a value between 16 and 256")
+    exit()
+
 pbar = tqdm(total=nimages)
-k = K_means(args["kmeans"],args["size"],args["resample"])
+k = K_means(args["kmeans"], args["size"], args["resample"])
 k.generate_k_clusters(imagePaths)
 k.rearrange_clusters()
-for i in range(k.k) :
-	try :
-	  os.makedirs(folder+str(i+1).zfill(nfolders))
-	except :
-	  print("Folder already exists")
+
+for i in range(k.k):
+    try:
+        os.makedirs(folder+str(i+1).zfill(nfolders))
+    except:
+        print("Folder already exists")
+
 action = shutil.copy
-if args["move"] :
-	action = shutil.move
+if args["move"]:
+    action = shutil.move
+
 for i in range(len(k.cluster)):
-	action(k.end[i], folder+"/"+str(k.cluster[i]+1).zfill(nfolders)+"/")
+    dest_path = os.path.join(folder, str(k.cluster[i]+1).zfill(nfolders))
+    action(k.end[i], dest_path)
+    preserve_file_time(k.end[i], os.path.join(dest_path, os.path.basename(k.end[i])))
