@@ -32,17 +32,17 @@ python groupimg.py -f /home/user/Pictures/
 
 ## Parameters
 
-\ `-f` folder where your images are (use absolute path).
+- `-f` folder where your images are (use absolute path).
 Example: ```groupimg -f /home/user/Pictures```
 
-\ `-k` number of folders you want to separate your images. 
+- `-k` number of folders you want to separate your images. 
 Example: ```groupimg -f /home/user/Pictures -k 5```
 
-\ `-r` size to resample the image by. Default is 128. Range should be a value between 16 and 256.
+- `-r` size to resample the image by. Default is 128. Range should be a value between 16 and 256.
 
-\ `-m` if you want to move your images instead of just copy them.
+- `-m` if you want to move your images instead of just copy them.
 
-\ `-s` if you want the algorithm to consider the size of the images as a feature.
+- `-s` if you want the algorithm to consider the size of the images as a feature.
 
 ### GUI
 
