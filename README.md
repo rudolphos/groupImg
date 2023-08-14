@@ -1,3 +1,4 @@
+
 # groupImg
 
 A python script to organize your images by similarity.
@@ -17,7 +18,6 @@ It was about one year since I made the switch from Windows to Linux, and I wante
 Navigate to the folder you want. CLI - Command Line Interface or GUI - Graphic User Interface
 
 Install the requirements.txt
-
 ```
 pip install -r requirements.txt
 ```
@@ -32,15 +32,17 @@ python groupimg.py -f /home/user/Pictures/
 
 ## Parameters
 
-\-f folder where your images are (use absolute path).
-```groupimg -f /home/user/Pictures```
+\ `-f` folder where your images are (use absolute path).
+Example: ```groupimg -f /home/user/Pictures```
 
-\-k number of folders you want to separate your images. 
-```groupimg -f /home/user/Pictures -k 5```
+\ `-k` number of folders you want to separate your images. 
+Example: ```groupimg -f /home/user/Pictures -k 5```
 
-\-m if you want to move your images instead of just copy them.
+\ `-r` size to resample the image by. Default is 128. Range should be a value between 16 and 256.
 
-\-s if you want the algorithm to consider the size of the images as a feature.
+\ `-m` if you want to move your images instead of just copy them.
+
+\ `-s` if you want the algorithm to consider the size of the images as a feature.
 
 ### GUI
 
@@ -56,12 +58,12 @@ Click the button Select folder to select the folder with the pictures you want t
 
 You can adjust the settings by checking the settings box.
 
-N. Group - How many groups should the images be separated in.
-
-Resample - Size to resample the image before comparing (small sizes gives fast results).
-
-Move - Move the images instead of copy them (useful if you have low space on your hard drive).
-
-Size - Consider the size of the images to organize them (useful if you want to separate thumbnails from real pictures).
+ - **N. Group** - How many groups should the images be separated in.
+ - **Resample** - Size to resample the image before comparing (small sizes
+   gives fast results).
+ - **Move** - Move the images instead of copy them (useful if you have low
+   space on your hard drive).
+ - **Size** - Consider the size of the images to organize them (useful if
+   you want to separate thumbnails from real pictures).
 
 [![Donations](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=victorqribeiro%40gmail%2ecom&lc=BR&item_name=Victor%20Ribeiro&item_number=donation&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted)
